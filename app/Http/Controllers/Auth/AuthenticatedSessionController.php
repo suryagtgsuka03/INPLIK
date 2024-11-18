@@ -26,10 +26,17 @@ class AuthenticatedSessionController extends Controller
     {
         // Coba untuk mengautentikasi pengguna
         if (Auth::attempt($request->only('email', 'password'))) {
-            // Jika berhasil, regenerasi session dan redirect
+            // Jika berhasil, regenerasi session
             $request->session()->regenerate();
-            return redirect()->intended(route('dashboard', absolute: false))
-                ->with('status', 'Login berhasil!');
+
+            $user = Auth::user();
+
+            // Arahkan berdasarkan peran pengguna
+            if ($user->role === 'Admin') {
+                return redirect('admin-dashboard')->with('status', 'Login berhasil sebagai admin!');
+            }
+
+            return redirect()->intended(route('dashboard'))->with('status', 'Login berhasil!');
         }
 
         // Jika autentikasi gagal, tambahkan pesan notifikasi
@@ -46,7 +53,6 @@ class AuthenticatedSessionController extends Controller
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect('/');
