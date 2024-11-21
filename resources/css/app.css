@@ -51,6 +51,8 @@
 .search {
     @apply w-full h-8 rounded-lg pl-3 pr-[2.5rem] text-gray-700 border border-gray-300 focus:outline-none focus:border-teal-600; /* Ensures text doesn't overlap the icon */
 }
+
+
 /* TUTUP DASHBOARD */
 
 /* LOGIN */
@@ -70,6 +72,8 @@
     @apply flex items-center justify-between w-full;
 }
 /* TUTUP LOGIN */
+
+
 
 /* Responsive Layout */
 @media (max-width: 640px) {

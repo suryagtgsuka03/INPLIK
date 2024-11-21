@@ -60,46 +60,45 @@
                         @csrf
                         <div>
                             <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-                            <input type="text" id="title" name="title"
+                            <input type="text" id="title" name="title" required
                                 class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-3"
-                                placeholder="Masukkan judul film" required>
+                                placeholder="Masukkan judul film">
                         </div>
                         <div>
                             <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                            <textarea id="description" name="description" rows="4"
+                            <textarea id="description" name="description" required rows="4"
                                 class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-3"
-                                placeholder="Masukkan deskripsi film" required></textarea>
+                                placeholder="Masukkan deskripsi film"></textarea>
                         </div>
                         <div>
                             <label for="genre" class="block text-sm font-medium text-gray-700">Genre</label>
-                            <input type="text" id="genre" name="genre"
+                            <input type="text" id="genre" name="genre" required
                                 class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-3"
-                                placeholder="Masukkan genre film" required>
+                                placeholder="Masukkan genre film">
                         </div>
                         <div>
                             <label for="release_date" class="block text-sm font-medium text-gray-700">Release Date</label>
-                            <input type="date" id="release_date" name="release_date"
-                                class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-3"
-                                required>
+                            <input type="date" id="release_date" name="release_date" required
+                                class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-3">
                         </div>
                         <div>
                             <label for="thumbnail" class="block text-sm font-medium text-gray-700">Thumbnail (URL)</label>
-                            <input type="url" id="thumbnail" name="thumbnail"
+                            <input type="url" id="thumbnail" name="thumbnail" required
                                 class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-3"
-                                placeholder="Masukkan URL thumbnail" required>
+                                placeholder="Masukkan URL thumbnail">
                         </div>
                         <div>
                             <label for="thumbnail_modal" class="block text-sm font-medium text-gray-700">Thumbnail Modal
                                 (URL)</label>
-                            <input type="url" id="thumbnail_modal" name="thumbnail_modal"
+                            <input type="url" id="thumbnail_modal" name="thumbnail_modal" required
                                 class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-3"
-                                placeholder="Masukkan URL thumbnail modal" required>
+                                placeholder="Masukkan URL thumbnail modal">
                         </div>
                         <div>
                             <label for="video_url" class="block text-sm font-medium text-gray-700">Video URL</label>
-                            <input type="url" id="video_url" name="video_url"
+                            <input type="url" id="video_url" name="video_url" required
                                 class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-3"
-                                placeholder="Masukkan URL video" required>
+                                placeholder="Masukkan URL video">
                         </div>
                         <div class="flex justify-end">
                             <button type="submit"

@@ -6,12 +6,13 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AdminMiddleware
+class CheckStatusMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check() || Auth::user()->role !== 'Admin') {
-            return redirect()->route('dashboard')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+        $user = Auth::user();
+        if ($user && $user->status === 'Guest') {
+            return redirect()->route('dashboard')->with('error', 'Akses tidak diizinkan untuk pengguna Guest.');
         }
 
         return $next($request);

@@ -4,9 +4,12 @@ use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-  return view('public/dashboard');
-});
+  return view('public.dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/', [MovieController::class, 'dashboard'])
+  ->middleware(['auth', 'verified'])
+  ->name('dashboard');
 Route::middleware(['auth', 'Admin'])->group(function () {
   Route::get('/admin-dashboard', function () {
     return view('private.admin');
@@ -19,12 +22,15 @@ Route::middleware(['auth', 'Admin'])->group(function () {
   Route::get('/admin-input', function () {
     return view('private.input');
   })->name('admin.input');
+
   Route::post('/admin-input', [MovieController::class, 'store'])->name('movie.store');
+  Route::get('/admin-detail', [MovieController::class, 'adminDetail'])->name('admin.detail');
+  Route::post('/admin-edit/{id}', [MovieController::class, 'update'])->name('movie.update');
+  Route::delete('/admin-delete/{id}', [MovieController::class, 'destroy'])->name('movie.delete');
 });
 
-Route::get('/dashboard', function () {
-  return view('public.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+Route::get('/videos/{id}', [MovieController::class, 'dashboard'])
+  ->middleware(['auth', 'check.status'])
+  ->name('video.dashboard');
 
 require __DIR__ . '/auth.php';

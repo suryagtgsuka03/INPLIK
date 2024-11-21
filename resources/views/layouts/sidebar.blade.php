@@ -21,7 +21,7 @@
             Detail
         </a>
         <a class="flex items-center py-2 px-8 {{ Request::is('inplik-dashboard') ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700 hover:text-white' }}"
-            href="{{ url('dashboard') }}">
+            href="{{ url('/') }}">
             <i class="fas fa-home mr-3"></i>
             Inplik Dashboard
         </a>

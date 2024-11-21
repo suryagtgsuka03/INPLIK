@@ -198,41 +198,49 @@
     feather.replace();
     // buka modal
     document.addEventListener("DOMContentLoaded", function() {
-        const modal = document.getElementById("modal");
-        const closeModal = document.getElementById("closeModal");
+        // Menangani pembukaan modal
         const kotakRunElements = document.querySelectorAll(".kotak-run");
 
-        // Function to open the modal
-        function openModal() {
-            console.log("Opening modal...");
-            modal.style.display = "flex";
-        }
-
-        // Function to close the modal
-        function closeModalFunction() {
-            console.log("Closing modal...");
-            modal.style.display = "none";
-        }
-
-        // Add click event listeners to each .kotak-run element
         kotakRunElements.forEach(function(element) {
             element.addEventListener("click", function(event) {
-                event.preventDefault(); // Prevent default action if it's a link
-                openModal();
+                event.preventDefault(); // Mencegah aksi default (navigasi)
+
+                const movieId = element.getAttribute("data-id"); // Ambil ID film
+
+                const modal = document.getElementById(
+                `modal-${movieId}`); // Cari modal dengan ID film
+
+                if (modal) {
+                    modal.style.display = "flex"; // Tampilkan modal
+                }
             });
         });
 
-        // Add event listener to close button
-        closeModal.addEventListener("click", function(event) {
-            event.preventDefault();
-            closeModalFunction();
+        // Menangani penutupan modal
+        const closeButtons = document.querySelectorAll(".close");
+
+        closeButtons.forEach(function(button) {
+            button.addEventListener("click", function(event) {
+                event.preventDefault(); // Mencegah aksi default
+
+                const movieId = button.getAttribute("data-id"); // Ambil ID film
+
+                const modal = document.getElementById(
+                `modal-${movieId}`); // Cari modal dengan ID film
+
+                if (modal) {
+                    modal.style.display = "none"; // Sembunyikan modal
+                }
+            });
         });
 
-        // Close modal if clicking outside of the modal content
-        modal.addEventListener("click", function(event) {
-            if (event.target === modal) {
-                closeModalFunction();
-            }
+        // Menutup modal jika klik di luar modal
+        document.querySelectorAll(".modal").forEach(function(modal) {
+            modal.addEventListener("click", function(event) {
+                if (event.target === modal) {
+                    modal.style.display = "none"; // Sembunyikan modal
+                }
+            });
         });
     });
     // tutup modal

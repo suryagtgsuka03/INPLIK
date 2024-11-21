@@ -11,6 +11,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Alias untuk AdminMiddleware
+        $middleware->alias(['check.status' => \App\Http\Middleware\CheckStatusMiddleware::class]);
         $middleware->alias(['Admin' => \App\Http\Middleware\AdminMiddleware::class]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
