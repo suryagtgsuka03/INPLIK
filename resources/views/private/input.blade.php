@@ -6,44 +6,6 @@
 
     @include('layouts.sidebar')
 
-    @if ($errors->any())
-        <script>
-            let errorMessages = '';
-            @foreach ($errors->all() as $error)
-                errorMessages += '{{ $error }}\n';
-            @endforeach
-
-            Swal.fire({
-                title: 'Gagal!',
-                text: errorMessages,
-                icon: 'error',
-                confirmButtonText: 'Coba Lagi'
-            });
-        </script>
-    @endif
-
-    @if (session('error'))
-        <script>
-            Swal.fire({
-                title: 'Gagal!',
-                text: '{{ session('error') }}',
-                icon: 'error',
-                confirmButtonText: 'Coba Lagi'
-            });
-        </script>
-    @endif
-
-    @if (session('status'))
-        <script>
-            Swal.fire({
-                title: 'Berhasil!',
-                text: '{{ session('status') }}',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-        </script>
-    @endif
-
     <div class="flex-1 flex flex-col lg:ml-64">
         @include('layouts.navbar')
         <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">

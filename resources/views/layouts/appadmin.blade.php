@@ -17,6 +17,55 @@
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
     <div class="flex">
+
+        @if ($errors->any())
+            <script>
+                let errorMessages = '';
+                @foreach ($errors->all() as $error)
+                    errorMessages += '{{ $error }}\n';
+                @endforeach
+
+                Swal.fire({
+                    title: 'Gagal!',
+                    text: errorMessages,
+                    icon: 'error',
+                    confirmButtonText: 'Coba Lagi'
+                });
+            </script>
+        @endif
+
+        @if (session('error'))
+            <script>
+                Swal.fire({
+                    title: 'Gagal!',
+                    text: '{{ session('error') }}',
+                    icon: 'error',
+                    confirmButtonText: 'Coba Lagi'
+                });
+            </script>
+        @endif
+
+        @if (session('status'))
+            <script>
+                Swal.fire({
+                    title: 'Berhasil!',
+                    text: '{{ session('status') }}',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            </script>
+        @endif
+
+        @if (session('quest'))
+            <script>
+                Swal.fire({
+                    title: 'Apakah Anda Yakin ?',
+                    text: '{{ session('error') }}',
+                    icon: 'error',
+                    confirmButtonText: 'Coba Lagi'
+                });
+            </script>
+        @endif
         @yield('content')
     </div>
 

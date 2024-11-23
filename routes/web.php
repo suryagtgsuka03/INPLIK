@@ -27,10 +27,11 @@ Route::middleware(['auth', 'Admin'])->group(function () {
   Route::get('/admin-detail', [MovieController::class, 'adminDetail'])->name('admin.detail');
   Route::post('/admin-edit/{id}', [MovieController::class, 'update'])->name('movie.update');
   Route::delete('/admin-delete/{id}', [MovieController::class, 'destroy'])->name('movie.delete');
+
+  Route::get('/videos/{id}', [MovieController::class, 'dashboard'])
+    ->middleware(['auth', 'check.status'])
+    ->name('video.dashboard');
 });
 
-Route::get('/videos/{id}', [MovieController::class, 'dashboard'])
-  ->middleware(['auth', 'check.status'])
-  ->name('video.dashboard');
 
 require __DIR__ . '/auth.php';

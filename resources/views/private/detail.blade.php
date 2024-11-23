@@ -46,19 +46,20 @@
 
                             <div class="flex justify-between mt-6 space-x-4">
                                 <button type="button"
-                                    class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+                                    class="bg-blue-500 text-white px-4 h-[2.5rem] py-2 rounded-lg hover:bg-blue-600 transition duration-300"
                                     onclick="openEditModal({{ $movie }})">
                                     Edit
                                 </button>
-                                <form action="{{ route('movie.delete', $movie->id) }}" method="POST"
-                                    onsubmit="return confirm('Yakin ingin menghapus film ini?');">
+                                <form id="deleteForm-{{ $movie->id }}" action="{{ route('movie.delete', $movie->id) }}"
+                                    method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit"
-                                        class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300">
+                                    <button type="button" onclick="confirmDelete({{ $movie->id }})"
+                                        class="bg-red-500 text-white px-4 h-[2.5rem] py-2 rounded-lg hover:bg-red-600 transition duration-300">
                                         Delete
                                     </button>
                                 </form>
+
                             </div>
                         </div>
                     @endforeach
@@ -147,6 +148,24 @@
 
         function closeEditModal() {
             document.getElementById('editModal').classList.add('hidden');
+        }
+
+        function confirmDelete(movieId) {
+            Swal.fire({
+                title: 'Apakah Anda Yakin?',
+                text: "Data ini akan dihapus secara permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Mengirim form berdasarkan movieId
+                    document.getElementById('deleteForm-' + movieId).submit();
+                }
+            });
         }
     </script>
 @endsection
