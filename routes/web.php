@@ -4,7 +4,7 @@ use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-  return view('public.');
+  return view('public.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/', [MovieController::class, 'dashboard'])
