@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="video md:px-20 sm:px-1">
-        <div class="judul">
+        {{-- <div class="judul">
             <h1 class="">COMING SOON</h1>
         </div>
         <div class="flex space-x-6 overflow-x-auto overflow-y-hidden hide-scrollbar p-6">
@@ -19,10 +19,35 @@
                     </div>
                 @endif
             @endforeach
+        </div> --}}
+
+        <div class="judul">
+            <h1 class="">MOVIES</h1>
         </div>
 
+        @if ($movies->count() > 0)
+            <div class="flex space-x-6 overflow-x-auto overflow-y-hidden hide-scrollbar p-6">
+                @foreach ($movies as $movie)
+                    @if (auth()->check() && (auth()->user()->status === 'Premium' || auth()->user()->status === 'Basic'))
+                        <a class="kotak-run" href="{{ route('video.dashboard', $movie->id) }}" data-id="{{ $movie->id }}">
+                            <img class="poster-run group" src="{{ $movie->thumbnail }}" alt="Thumbnail">
+                        </a>
+                    @else
+                        <div class="kotak-run opacity-50 cursor-not-allowed">
+                            <img class="poster-run group" src="{{ $movie->thumbnail }}" alt="Thumbnail">
+                        </div>
+                    @endif
+                @endforeach
+            </div>
+        @else
+            <div class="flex space-x-6 overflow-x-auto overflow-y-hidden hide-scrollbar p-6">
+                <p class="text-white">No movies found for this genre.</p>
+            </div>
+        @endif
+
+
         @foreach ($movies as $movie)
-            <div id="modal-{{ $movie->id }}" class="modal rounded-md hidden">
+            <div id="modal-{{ $movie->id }}" class="modal rounded-md hidden animate__animated animate__fadeIn">
                 <div class="modal-content">
                     <span class="close" data-id="{{ $movie->id }}">&times;</span>
                     <img src="{{ $movie->thumbnail_modal }}" alt="Poster" class="modal-image">

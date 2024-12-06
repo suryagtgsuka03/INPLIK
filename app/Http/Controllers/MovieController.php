@@ -8,21 +8,26 @@ use Illuminate\Http\Request;
 
 class MovieController extends Controller
 {
-    // public function movie()
-    // {
-    //     return view('private.admin');
-    // }
-
     public function adminDetail()
     {
         $movies = Movie::all(); // Mengambil semua data film dari database
-        return view('private.detail', compact('movies')); // Mengirimkan data ke view
+        return view('private.detail', compact('movies',)); // Mengirimkan data ke view
     }
 
     public function dashboard()
     {
         $movies = Movie::all(); // Mengambil semua data film dari database
         return view('public.dashboard', compact('movies')); // Mengirimkan data ke view
+    }
+    
+    public function filterByGenre(Request $request)
+    {
+        $genreName = $request->input('genre');
+        
+        // Fetch movies by genre name
+        $movies = Movie::where('genre', $genreName)->get(); 
+    
+        return view('public.dashboard', compact('movies')); // Return the view with filtered movies
     }
 
     public function store(Request $request)
@@ -39,7 +44,6 @@ class MovieController extends Controller
         ]);
 
         try {
-            // Simpan data ke database
             Movie::create([
                 'title' => $request->title,
                 'description' => $request->description,
@@ -64,7 +68,6 @@ class MovieController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validasi input
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:500',

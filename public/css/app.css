@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* DASHBOARD */
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.nav-btn {
+    @apply transition-all duration-300 relative;
+}
+
+.nav-btn:hover {
+    @apply scale-110 text-teal-400;
+}
+
+.nav-btn-hover {
+    @apply absolute left-1/2 top-7 w-0 h-0.5 bg-teal-400 transition-all duration-300;
+}
+
+.group:hover .nav-btn-hover {
+    @apply left-0 w-full;
+}
+
+.kotak-run {
+    @apply flex-shrink-0 bg-black hover:scale-105 transition-all duration-300 rounded-2xl;
+}
+
+.poster-run {
+    @apply w-[19rem] h-[24rem] rounded-2xl;
+}
+
+.kotak2 {
+    @apply hover:scale-105 rounded-2xl transition-all duration-300 bg-red-500 w-[19rem] h-[24rem];
+}
+
+.judul h1 {
+    @apply text-white font-semibold mt-3 mb-3 text-center sm:text-left;
+}
+
+.icon-search {
+    @apply w-5 h-5 absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400;
+}
+
+.search {
+    @apply w-full h-8 rounded-lg pl-3 pr-[2.5rem] text-gray-700 border border-gray-300 focus:outline-none focus:border-teal-600; /* Ensures text doesn't overlap the icon */
+}
+
+
+/* TUTUP DASHBOARD */
+
+/* LOGIN */
+.icon-form {
+    @apply text-white w-[2.5rem] h-auto bg-teal-900 absolute p-2 rounded-s-lg;
+}
+
+.form {
+    @apply w-[25rem] h-[2.5rem] rounded-lg pl-12;
+}
+
+.btn {
+    @apply bg-teal-900 text-white text-lg p-2 rounded-lg w-[7rem] text-center;
+}
+
+.btn-con {
+    @apply flex items-center justify-between w-full;
+}
+/* TUTUP LOGIN */
+
+
+
+/* Responsive Layout */
+@media (max-width: 640px) {
+    .kotak-run,
+    .kotak2 {
+        width: 200px;
+        height: 300px;
+    }
+
+    .content {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .nav-btn {
+        font-size: 1rem;
+    }
+
+    .nav-btn-hover {
+        top: 6px;
+    }
+}
+
+@media (min-width: 640px) {
+    .kotak-run {
+        width: 250px;
+    }
+
+    .kotak2 {
+        width: 250px;
+    }
+}

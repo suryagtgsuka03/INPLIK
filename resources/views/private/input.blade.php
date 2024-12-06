@@ -34,9 +34,20 @@
                         </div>
                         <div>
                             <label for="genre" class="block text-sm font-medium text-gray-700">Genre</label>
-                            <input type="text" id="genre" name="genre" required
-                                class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-3"
-                                placeholder="Masukkan genre film">
+                            <select id="genre" name="genre" required
+                                class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-3">
+                                <option value="" disabled selected>Pilih genre film</option>
+                                <option value="Action">Action</option>
+                                <option value="Adventure">Adventure</option>
+                                <option value="Comedy">Comedy</option>
+                                <option value="Drama">Drama</option>
+                                <option value="Horror">Horror</option>
+                                <option value="Romance">Romance</option>
+                                <option value="Sci-Fi">Sci-Fi</option>
+                                <option value="Thriller">Thriller</option>
+                                <option value="Fantasy">Fantasy</option>
+                                <option value="Mystery">Mystery</option>
+                            </select>
                         </div>
                         <div>
                             <label for="release_date" class="block text-sm font-medium text-gray-700">Release Date</label>

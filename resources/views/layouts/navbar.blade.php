@@ -15,8 +15,6 @@
     </div>
     <div class="flex items-center">
         <a href="dashboard" class="text-gray-500 focus:outline-none mx-4">
-            <i class="fas fa-bell">
-            </i>
         </a>
         <form method="POST" action="{{ route('logout') }}">
             @csrf

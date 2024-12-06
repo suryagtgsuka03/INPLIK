@@ -36,12 +36,11 @@
             @csrf
             <div class="email mb-[1rem]">
                 <i data-feather="mail" class="icon-form"></i>
-                <input class="form" id="email" name="email" :value="old('email')" type="email"
-                    placeholder="Enter your email">
+                <input class="form" id="email" name="email" type="email" placeholder="Enter your email">
             </div>
             <div class="username mb-[1rem]">
                 <i data-feather="user" class="icon-form"></i>
-                <input class="form" id="name" name="name" :value="old('name')" type="text"
+                <input class="form" id="name" name="name" type="text" value="{{ old('email') }}"
                     placeholder="Enter your username">
             </div>
             <div class="password mb-[1rem]">
