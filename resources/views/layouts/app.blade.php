@@ -29,7 +29,7 @@
             width: 40rem;
             text-align: center;
             border-radius: 8px;
-            color: white;
+            color: black;
             position: relative;
         }
 
@@ -46,16 +46,6 @@
             width: 100%;
             height: 20rem;
             border-radius: 0 0 5rem 5rem;
-        }
-
-        .start-button {
-            background-color: red;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 20px;
         }
     </style>
 </head>
@@ -88,37 +78,19 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div x-data="genreDropdown()" class="relative inline-block text-left">
-                        <!-- Button -->
-                        <a @click="open = !open" class="nav-btn group cursor-pointer flex items-center space-x-1">
-                            Kategori
-                        </a>
-                        <div x-show="open" @click.away="open = false"
-                            class="absolute z-10 mt-2 bg-white rounded-lg shadow-lg w-64 p-4 left-1/2 -translate-x-1/2">
-                            <div class="grid grid-cols-2 gap-2">
-                                <!-- Genre Items -->
-                                <template x-for="genre in genres" :key="genre.id">
-                                    <a :href="`/movies?genre=${genre.name}`"
-                                        class="block text-gray-700 hover:text-white hover:bg-teal-500 rounded-lg px-2 py-1 text-sm">
-                                        <span x-text="genre.name"></span>
-                                    </a>
-                                </template>
-                            </div>
-                        </div>
-                    </div> --}}
-                    <a href="/berlangganan" class="nav-btn group">Berlangganan</a>
+                    @if (auth()->check() && auth()->user()->status === 'Guest')
+                        <a href="/berlangganan" class="nav-btn group">Berlangganan</a>
+                    @endif
                 </div>
 
                 <div class="flex items-center space-x-4">
                     <div class="relative group">
-                        <!-- Ikon dengan Feather -->
                         <i class="text-white text-2xl hover:text-yellow-400 transition-colors duration-300"
                             data-feather="{{ Auth::user()->status === 'Premium' ? 'anchor' : (Auth::user()->status === 'Basic' ? 'bold' : (Auth::user()->status === 'Guest' ? 'user' : 'help-circle')) }}">
                         </i>
-                        <!-- Tooltip -->
                         <div
                             class="absolute left-1/2 transform -translate-x-1/2 mt-2 bg-gray-800 text-white text-sm rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-md whitespace-nowrap pointer-events-none">
-                            Status: {{ Auth::user()->status ?? 'Tidak Diketahui' }}
+                            Status: {{ Auth::user()->status ?? 'Tidak Diketahui' }} <br> Durasi: 
                         </div>
                     </div>
 
@@ -167,13 +139,11 @@
             </div>
         </nav>
 
-        <!-- Main Content -->
         <div class="content mt-6 mx-10">
             @yield('content')
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="bg-teal-900/70 text-white py-10">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
@@ -204,28 +174,6 @@
 
 <script>
     feather.replace();
-
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll(".kotak-run").forEach(element => {
-            element.addEventListener("click", event => {
-                event.preventDefault();
-                document.getElementById(`modal-${element.dataset.id}`).style.display = "flex";
-            });
-        });
-
-        document.querySelectorAll(".close").forEach(button => {
-            button.addEventListener("click", event => {
-                event.preventDefault();
-                document.getElementById(`modal-${button.dataset.id}`).style.display = "none";
-            });
-        });
-
-        document.querySelectorAll(".modal").forEach(modal => {
-            modal.addEventListener("click", event => {
-                if (event.target === modal) modal.style.display = "none";
-            });
-        });
-    });
 
     function genreDropdown() {
         return {
@@ -262,6 +210,13 @@
                 },
             ],
         };
+    }
+
+    function changeVideoResolution(movieId) {
+        const videoPlayer = document.getElementById(`videoPlayer-${movieId}`);
+        const resolutionDropdown = document.getElementById(`resolution-${movieId}`);
+        videoPlayer.src = resolutionDropdown.value;
+        videoPlayer.load();
     }
 </script>
 

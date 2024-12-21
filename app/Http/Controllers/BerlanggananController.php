@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Berlangganan;
 use App\Models\Payments;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Midtrans\Config;
-use Midtrans\Notification;
 use Midtrans\Snap;
-use Monolog\Logger;
 
 class BerlanggananController extends Controller
 {
@@ -21,8 +20,14 @@ class BerlanggananController extends Controller
     
     public function public()
     {
+        $user = auth()->user();
+    
+        if (in_array($user->status, ['Premium', 'Basic'])) {
+            return redirect()->route('dashboard')->with('message', 'Anda sudah berlangganan.');
+        }
+    
         $langganans = Berlangganan::all();
-        $snapToken = ''; // Default kosong
+        $snapToken = '';
         return view('public.berlangganan', compact('langganans', 'snapToken'));
     }
 
@@ -55,7 +60,6 @@ class BerlanggananController extends Controller
         ]);
 
         try {
-            // Cari dan update langganan
             $langganan = Berlangganan::findOrFail($id);
             $langganan->update([
                 'tipe' => $validated['tipe_langganan'],
@@ -63,7 +67,6 @@ class BerlanggananController extends Controller
                 'harga' => $validated['harga'],
             ]);
 
-            // Kirim pesan sukses ke view
             return redirect()->route('berlangganan.index')->with('status', 'success')->with('message', 'Data langganan berhasil diupdate.');
         } catch (\Exception $e) {
             return redirect()->route('berlangganan.index')->with('status', 'error')->with('message', 'Terjadi kesalahan: ' . $e->getMessage());
@@ -83,7 +86,6 @@ class BerlanggananController extends Controller
     }
     public function createPayment(Request $request)
     {
-        // Validasi input
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
@@ -92,29 +94,25 @@ class BerlanggananController extends Controller
         ]);
 
         try {
-            // Membuat order ID unik
             $order_id = 'order-' . time() . '-' . rand(1000, 9999);
 
-            // Simpan data pembayaran ke database
             $payment = Payments::create([
                 'order_id' => $order_id,
-                'status' => 'pending', // Status awal
+                'status' => 'pending',
                 'name' => $request->name,
                 'email' => $request->email,
                 'tipe' => $request->tipe,
                 'price' => $request->price,
-                'checkout_link' => '', // Akan diupdate setelah mendapatkan Snap Token
+                'checkout_link' => '',
             ]);
 
             Log::info('Data pembayaran disimpan ke database:', $payment->toArray());
 
-            // Konfigurasi Midtrans
             Config::$serverKey = env('MIDTRANS_SERVER_KEY');
-            Config::$isProduction = false; // Gunakan sandbox untuk testing
+            Config::$isProduction = false;
             Config::$isSanitized = true;
             Config::$is3ds = true;
 
-            // Detail transaksi untuk Midtrans
             $transactionDetails = [
                 'order_id' => $order_id,
                 'gross_amount' => $request->price,
@@ -140,20 +138,16 @@ class BerlanggananController extends Controller
                 'customer_details' => $customerDetails,
             ];
 
-            // Mendapatkan Snap Token dari Midtrans
             $snapToken = Snap::getSnapToken($transaction);
 
-            // Update checkout_link dengan Snap Token
             $payment->update([
                 'checkout_link' => $snapToken,
             ]);
 
             Log::info('Snap Token berhasil didapatkan:', ['snapToken' => $snapToken]);
 
-            // Kirim Snap Token ke frontend
             return response()->json(['snapToken' => $snapToken]);
         } catch (\Exception $e) {
-            // Log error dan kirim pesan error ke frontend
             Log::error('Terjadi kesalahan saat memproses pembayaran:', ['error' => $e->getMessage()]);
             return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
         }
@@ -167,18 +161,14 @@ class BerlanggananController extends Controller
         ]);
     
         try {
-            // Cari pembayaran berdasarkan order_id
             $payment = Payments::where('order_id', $request->order_id)->firstOrFail();
-    
-            // Perbarui status transaksi
             $payment->update([
-                'status' => $request->transaction_status, // contoh: 'sukses', 'pending', 'gagal'
+                'status' => $request->transaction_status,
             ]);
     
-            // Jika status sukses, update status pengguna di tabel users
             if ($request->transaction_status === 'sukses') {
-                \App\Models\User::where('email', $payment->email)->update([
-                    'status' => $payment->tipe, // Ubah status sesuai tipe langganan
+                User::where('email', $payment->email)->update([
+                    'status' => $payment->tipe,
                 ]);
             }
     

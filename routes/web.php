@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\BerlanggananController;
 use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\MovieController;
@@ -24,6 +25,8 @@ Route::middleware('auth')->group(function () {
     return view('private.akundetail');});
 });
 
+Route::get('/redirect', [AuthenticatedSessionController::class, 'redirectToGoogle'])->name('redirectToGoogle');
+Route::get('/callback', [AuthenticatedSessionController::class, 'handleGoogleCallback'])->name('handleGoogleCallback');
 
 
 Route::post('/create-payment', [BerlanggananController::class, 'createPayment'])->name('create.payment');
@@ -51,13 +54,10 @@ Route::middleware(['auth', 'Admin'])->group(function () {
   Route::post('/admin-edit/{id}', [MovieController::class, 'update'])->name('movie.update');
   Route::delete('/admin-delete/{id}', [MovieController::class, 'destroy'])->name('movie.delete');
 
-  // Route untuk berlangganan
   Route::get('/admin-berlangganan', [BerlanggananController::class, 'index'])->name('berlangganan.index');
   Route::post('/admin-berlangganan', [BerlanggananController::class, 'store'])->name('berlangganan.store');
 
   Route::put('/admin-berlangganan/{id}', [BerlanggananController::class, 'edit'])->name('berlangganan.edit');
-
-  // Route delete untuk berlangganan
   Route::delete('/admin-berlangganan/delete/{id}', [BerlanggananController::class, 'delete'])->name('berlangganan.delete');
 
 

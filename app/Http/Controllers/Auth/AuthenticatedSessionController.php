@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -32,15 +34,45 @@ class AuthenticatedSessionController extends Controller
         }
 
         return redirect()->back()
-            ->withInput($request->only('email')) // Mengingat input email
+            ->withInput($request->only('email'))
             ->with('error', 'Email atau password yang Anda masukkan salah.');
     }
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request)
     {
-        Auth::guard('web')->logout();
+        Auth::guard(name: 'web')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
+
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleGoogleCallback()
+    {
+        $googleUser = Socialite::driver('google')->stateless()->user();
+
+        $user = User::where('google_id', $googleUser->getId())
+                    ->orWhere('email', $googleUser->getEmail())
+                    ->first();
+
+        if (!$user) {
+            $user = User::create([
+                'name' => $googleUser->getName(),
+                'email' => $googleUser->getEmail(),
+                'google_id' => $googleUser->getId(),
+                'password' => null,
+                'role' => 'User',
+                'status' => 'Guest',
+            ]);
+        }
+
+        Auth::login($user);
+        session()->regenerate();
 
         return redirect('/');
     }

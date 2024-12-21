@@ -90,23 +90,19 @@
 
         .content-container {
             margin-top: 5rem;
-            /* Jarak antara navbar dan konten */
         }
     </style>
 </head>
 
 <body class="bg-cover bg-center bg-no-repeat bg-fixed flex flex-col min-h-screen">
     <div class="flex-1">
-        <!-- Navbar -->
         <nav class="py-4">
             <div
                 class="container mx-auto flex items-center justify-between px-6 py-3 bg-teal-900/40 rounded-lg shadow-lg backdrop-blur-lg"">
-                <!-- Kembali Button -->
                 <a href="{{ url('/') }}" class="text-white font-bold text-2xl">
                     <img class="w-36" src="{{ asset('img/logo.png') }}" alt="Logo">
                 </a>
 
-                <!-- Logout and Kembali Navigation -->
                 <div class="flex items-center space-x-4">
                     <a href="{{ url('/') }}" class="nav-btn group">
                         Kembali
@@ -146,13 +142,10 @@
             </div>
         </nav>
 
-        <!-- Content Section -->
         <div class="container mx-auto p-6 py-4 content-container">
-            <!-- Profile and Change Password Form -->
             <div class="max-w-full mx-auto bg-teal-900/70 text-white p-6 rounded-lg shadow-lg">
                 <h2 class="form-title">Akun Detail dan Ganti Password</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 min-h-[300px]">
-                    <!-- User Info Section -->
                     <form method="POST" action="{{ route('profile.updateName') }}" class="space-y-6 flex flex-col">
                         @csrf
                         @method('PUT')
@@ -177,13 +170,11 @@
                             </div>
                         </div>
 
-                        <!-- Save Buttons -->
                         <div class="flex justify-between space-x-4 mt-4">
                             <button type="submit" class="btn-primary w-full">Simpan Nama dan Email</button>
                         </div>
                     </form>
 
-                    <!-- Form Password -->
                     <form method="POST" action="{{ route('profile.updatePassword') }}"
                         class="space-y-6 flex flex-col mt-6 md:mt-0">
                         @csrf
@@ -211,7 +202,6 @@
                             </div>
                         </div>
 
-                        <!-- Save Buttons -->
                         <div class="flex justify-between space-x-4 mt-4">
                             <button type="submit" class="btn-primary w-full">Simpan Password</button>
                         </div>

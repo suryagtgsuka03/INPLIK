@@ -12,6 +12,6 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array<int, string>
      */
     protected $except = [
-        'midtrans-callback', // Tambahkan route ini
+        'midtrans-callback',
     ];
 }

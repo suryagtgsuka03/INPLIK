@@ -43,7 +43,7 @@
             </div>
 
             <div class="flex items-center justify-center mt-4 mb-12">
-                <a href=""
+                <a href="{{ route('redirectToGoogle') }}"
                     class="flex items-center gap-3 bg-white text-gray-600 border border-gray-300 rounded-lg shadow-md hover:shadow-lg hover:bg-gray-100 px-6 py-2 transition">
                     <img src="{{ asset('img/google.png') }}" alt="Google logo" class="w-6 h-6">
                     <span class="font-medium">Sign in with Google</span>

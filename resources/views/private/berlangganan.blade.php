@@ -152,25 +152,20 @@
     </div>
 
     <script>
-        // Memastikan tombol edit dapat mengaktifkan modal
         document.querySelectorAll('.edit-btn').forEach(button => {
             button.addEventListener('click', function() {
-                // Mengambil data dari atribut data-*
                 const id = this.getAttribute('data-id');
                 const tipe = this.getAttribute('data-tipe');
                 const manfaat = this.getAttribute('data-manfaat');
                 const harga = this.getAttribute('data-harga');
 
-                // Mengisi data ke dalam form modal
                 document.getElementById('editTipe').value = tipe;
                 document.getElementById('editManfaat').value = manfaat;
                 document.getElementById('editHarga').value = harga;
 
-                // Menyesuaikan action form untuk edit
                 const form = document.getElementById('editForm');
                 form.action = `/admin-berlangganan/${id}`;
 
-                // Menampilkan modal
                 document.getElementById('editModal').classList.remove('hidden');
             });
         });

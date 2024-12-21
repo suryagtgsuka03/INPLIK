@@ -20,7 +20,21 @@
                             <p class="text-gray-600">{{ $movie->title }}</p>
 
                             <h1 class="text-lg font-bold text-gray-800 mt-4">Video</h1>
-                            <video class="w-full h-[14rem] rounded-lg mt-2" src="{{ $movie->video_url }}" controls></video>
+                            <div>
+                                <label for="resolution-{{ $movie->id }}" class="block text-gray-700 font-medium">Pilih
+                                    Resolusi</label>
+                                <select id="resolution-{{ $movie->id }}"
+                                    class="w-full mt-2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    onchange="changeVideoResolution({{ $movie->id }})">
+                                    <option value="{{ $movie->video_urls['360p'] }}">360p</option>
+                                    <option value="{{ $movie->video_urls['480p'] }}">480p</option>
+                                    <option value="{{ $movie->video_urls['720p'] }}">720p</option>
+                                    <option value="{{ $movie->video_urls['1080p'] }}">1080p</option>
+                                </select>
+                            </div>
+                            <video id="videoPlayer-{{ $movie->id }}" class="w-full h-auto rounded-lg mt-2" controls>
+                                <source src="{{ $movie->video_urls['360p'] }}" type="video/mp4">
+                            </video>
 
                             <div class="thumbnail grid grid-cols-2 gap-4 mt-4">
                                 <div>
@@ -68,7 +82,6 @@
         </main>
     </div>
 
-    <!-- Modal untuk Edit -->
     <div id="editModal"
         class="fixed z-20 inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden transition-opacity">
         <div class="bg-white shadow-md rounded-lg w-full max-w-xl p-6 relative">
@@ -162,10 +175,16 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Mengirim form berdasarkan movieId
                     document.getElementById('deleteForm-' + movieId).submit();
                 }
             });
+        }
+
+        function changeVideoResolution(movieId) {
+            const videoPlayer = document.getElementById(`videoPlayer-${movieId}`);
+            const resolutionDropdown = document.getElementById(`resolution-${movieId}`);
+            videoPlayer.src = resolutionDropdown.value;
+            videoPlayer.load();
         }
     </script>
 @endsection

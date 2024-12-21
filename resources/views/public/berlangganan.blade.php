@@ -25,7 +25,6 @@
         @endforeach
     </div>
 
-    <!-- Modal -->
     <div id="modal" class="fixed z-20 inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
         <div class="bg-white rounded-lg p-6 max-w-lg w-full">
             <h3 class="text-2xl font-bold text-gray-700 mb-4">Data Langganan</h3>
@@ -79,7 +78,7 @@
         }
 
         document.getElementById('paymentForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Cegah form disubmit langsung
+            e.preventDefault();
 
             fetch(this.action, {
                     method: 'POST',
@@ -102,7 +101,6 @@
                                 alert("Payment Success!");
                                 console.log('Result:', result);
 
-                                // Kirim status pembayaran ke server
                                 fetch('/update-payment-status', {
                                         method: 'POST',
                                         headers: {
@@ -110,14 +108,14 @@
                                             'Content-Type': 'application/json'
                                         },
                                         body: JSON.stringify({
-                                            order_id: result.order_id, // Kirim order_id
-                                            transaction_status: 'sukses' // Update status ke 'sukses'
+                                            order_id: result.order_id,
+                                            transaction_status: 'sukses'
                                         })
                                     })
                                     .then(response => response.json())
                                     .then(data => {
                                         if (data.status === 'success') {
-                                            location.reload(); // Refresh halaman
+                                            location.reload();
                                         } else {}
                                     })
                                     .catch(error => {

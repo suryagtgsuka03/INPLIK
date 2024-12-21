@@ -3,31 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Models\Movie;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 
 class MovieController extends Controller
 {
-    public function adminDetail()
-    {
-        $movies = Movie::all(); // Mengambil semua data film dari database
-        return view('private.detail', compact('movies',)); // Mengirimkan data ke view
+    public function adminDetail(){
+    $movies = Movie::all();
+    
+    foreach ($movies as $movie) {
+        $movie->video_urls = [
+            '360p' => str_replace('/upload/', '/upload/w_640,h_360,c_scale/', $movie->video_url),
+            '480p' => str_replace('/upload/', '/upload/w_854,h_480,c_scale/', $movie->video_url),
+            '720p' => str_replace('/upload/', '/upload/w_1280,h_720,c_scale/', $movie->video_url),
+            '1080p' => str_replace('/upload/', '/upload/w_1920,h_1080,c_scale/', $movie->video_url),
+        ];
     }
+
+    return view('private.detail', compact('movies'));
+    }
+
+    
 
     public function dashboard()
     {
-        $movies = Movie::all(); // Mengambil semua data film dari database
-        return view('public.dashboard', compact('movies')); // Mengirimkan data ke view
+        $movies = Movie::all();
+        foreach ($movies as $movie) {
+            $movie->video_urls = [
+                '360p' => str_replace('/upload/', '/upload/w_640,h_360,c_scale/', $movie->video_url),
+                '480p' => str_replace('/upload/', '/upload/w_854,h_480,c_scale/', $movie->video_url),
+                '720p' => str_replace('/upload/', '/upload/w_1280,h_720,c_scale/', $movie->video_url),
+                '1080p' => str_replace('/upload/', '/upload/w_1920,h_1080,c_scale/', $movie->video_url),
+            ];}
+
+        return view('public.dashboard', compact('movies'));
     }
     
     public function filterByGenre(Request $request)
     {
         $genreName = $request->input('genre');
         
-        // Fetch movies by genre name
         $movies = Movie::where('genre', $genreName)->get(); 
     
-        return view('public.dashboard', compact('movies')); // Return the view with filtered movies
+        return view('public.dashboard', compact('movies'));
     }
 
     public function store(Request $request)
@@ -62,8 +79,8 @@ class MovieController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $movie = Movie::findOrFail($id); // Cari film berdasarkan ID
-        return view('private.edit', compact('movie')); // Tampilkan view untuk edit film
+        $movie = Movie::findOrFail($id);
+        return view('private.edit', compact('movie'));
     }
 
     public function update(Request $request, $id)
@@ -79,7 +96,7 @@ class MovieController extends Controller
         ]);
 
         try {
-            $movie = Movie::findOrFail($id); // Cari film berdasarkan ID
+            $movie = Movie::findOrFail($id);
             $movie->update([
                 'title' => $request->title,
                 'description' => $request->description,
@@ -99,8 +116,8 @@ class MovieController extends Controller
     public function destroy($id)
     {
         try {
-            $movie = Movie::findOrFail($id); // Cari film berdasarkan ID
-            $movie->delete(); // Hapus data film
+            $movie = Movie::findOrFail($id);
+            $movie->delete();
 
             return redirect()->route('admin.detail')->with('status', 'Film berhasil dihapus.');
         } catch (\Exception $e) {
